@@ -9,6 +9,8 @@ public class Supplier : BaseEntity {
     public string? Email { get; set; }
     public string? Phone { get; set; }
     public string? Address { get; set; }
+    public string? TaxCode { get; set; }
+    public string? Description { get; set; }
     public ItemStatus Status { get; set; } = ItemStatus.ACTIVE;
 
     public ICollection<ItemPrice> ItemPrices { get; set; } = [];

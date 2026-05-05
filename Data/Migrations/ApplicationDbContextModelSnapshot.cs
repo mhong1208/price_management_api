@@ -135,6 +135,9 @@ namespace price_management_api.Data.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
@@ -150,6 +153,9 @@ namespace price_management_api.Data.Migrations
 
                     b.Property<string>("SupplierName")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TaxCode")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")

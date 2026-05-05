@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Register Service Dependency Injection Container
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<ISupplierService, SupplierService>();
 
 // Allow Frontend (Next.js) to access API
 builder.Services.AddCors(options =>
