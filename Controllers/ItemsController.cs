@@ -5,7 +5,7 @@ using price_management_api.Interfaces;
 namespace price_management_api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")] // Route sẽ là: /api/items
+[Route("api/items")]
 public class ItemsController : ControllerBase
 {
     private readonly IItemService _itemService;
@@ -23,8 +23,8 @@ public class ItemsController : ControllerBase
         return Ok(items);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ItemDto>> GetItem(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ItemDto>> GetItem(Guid id)
     {
         var item = await _itemService.GetItemByIdAsync(id);
         if (item == null) return NotFound(new { message = "Không tìm thấy mặt hàng này" });
@@ -37,7 +37,29 @@ public class ItemsController : ControllerBase
     {
         var newItem = await _itemService.CreateItemAsync(dto);
         
-        // Trả về HTTP 201 Created cùng với URL để xem lại dữ liệu vừa tạo
         return CreatedAtAction(nameof(GetItem), new { id = newItem.Id }, newItem);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ItemDto>> UpdateItem(Guid id, [FromBody] CreateItemDto dto)
+    {
+        var updatedItem = await _itemService.UpdateItemAsync(id, dto);
+        
+        return Ok(updatedItem);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ItemDto>> DeleteItem(Guid id)
+    {
+        var deletedItem = await _itemService.DeleteItemAsync(id);
+        
+        return Ok(deletedItem);
+    }
+
+    [HttpPost("pagination")]
+    public async Task<ActionResult<PagedResult<ItemDto>>> GetItemsPaginated([FromBody] PaginationRequestDto request)
+    {
+        var result = await _itemService.GetItemsPaginatedAsync(request);
+        return Ok(result);
     }
 }

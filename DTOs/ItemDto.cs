@@ -5,7 +5,7 @@ namespace price_management_api.DTOs;
 public class ItemDto
 {
     public Guid Id { get; set; }
-    public string ItemCode { get; set; } = string.Empty;
+    public string? ItemCode { get; set; }
     public string ItemName { get; set; } = string.Empty;
     public string? Description { get; set; }
     public string? Unit { get; set; }
@@ -15,7 +15,7 @@ public class ItemDto
 
 public class CreateItemDto
 {
-    public string ItemCode { get; set; } = string.Empty;
+    public string? ItemCode { get; set; }
     public string ItemName { get; set; } = string.Empty;
     public string? Description { get; set; }
     public string? Unit { get; set; }
