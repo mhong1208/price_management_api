@@ -151,9 +151,9 @@ public class ItemService : IItemService
                                      i.ItemCode.Contains(request.SearchText));
         }
 
-        if (request.Category.HasValue)
+        if (!string.IsNullOrEmpty(request.Category))
         {
-            query = query.Where(i => i.Category == request.Category.Value.ToString());
+            query = query.Where(i => i.Category == request.Category);
         }
 
         if (request.Status.HasValue)
