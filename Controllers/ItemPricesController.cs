@@ -26,7 +26,7 @@ public class ItemPricesController : ControllerBase
     public async Task<ActionResult<ItemPriceDto>> GetItemPrice(Guid id)
     {
         var itemPrice = await _itemPriceService.GetItemPriceByIdAsync(id);
-        if (itemPrice == null) return NotFound(new { message = "Không tìm thấy giá mặt hàng này" });
+        if (itemPrice == null) return NotFound(new { message = "Item price not found" });
 
         return Ok(itemPrice);
     }

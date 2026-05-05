@@ -12,6 +12,6 @@ public class Supplier : BaseEntity {
     public string? TaxCode { get; set; }
     public string? Description { get; set; }
     public ItemStatus Status { get; set; } = ItemStatus.ACTIVE;
-
+    // Relationship: A supplier provides multiple items at specific prices.
     public ICollection<ItemPrice> ItemPrices { get; set; } = [];
 }

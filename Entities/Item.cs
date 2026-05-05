@@ -10,7 +10,6 @@ public class Item : BaseEntity {
     public string? Unit { get; set; }
     public string? Category { get; set; }
     public ItemStatus Status { get; set; } = ItemStatus.ACTIVE;
-
-    // Mối quan hệ: Một mặt hàng có nhiều mức giá từ các NCC khác nhau
+    // relationship with item prices from different suppliers
     public ICollection<ItemPrice> ItemPrices { get; set; } = [];
 }

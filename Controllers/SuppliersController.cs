@@ -26,7 +26,7 @@ public class SuppliersController : ControllerBase
     public async Task<ActionResult<SupplierDto>> GetSupplier(Guid id)
     {
         var supplier = await _supplierService.GetSupplierByIdAsync(id);
-        if (supplier == null) return NotFound(new { message = "Không tìm thấy nhà cung cấp này" });
+        if (supplier == null) return NotFound(new { message = "Supplier not found" });
 
         return Ok(supplier);
     }
