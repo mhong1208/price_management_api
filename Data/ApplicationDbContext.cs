@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext {
     public DbSet<Item> Items { get; set; }
     public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<ItemPrice> ItemPrices { get; set; }
+    public DbSet<ItemPriceHistory> ItemPriceHistories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Item>().HasIndex(i => i.ItemCode).IsUnique();
@@ -24,6 +25,18 @@ public class ApplicationDbContext : DbContext {
             .HasOne(ip => ip.Supplier)
             .WithMany(s => s.ItemPrices)
             .HasForeignKey(ip => ip.SupplierId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ItemPriceHistory>()
+            .HasOne(iph => iph.Item)
+            .WithMany()
+            .HasForeignKey(iph => iph.ItemId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ItemPriceHistory>()
+            .HasOne(iph => iph.Supplier)
+            .WithMany()
+            .HasForeignKey(iph => iph.SupplierId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
