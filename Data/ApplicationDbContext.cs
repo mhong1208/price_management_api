@@ -13,5 +13,17 @@ public class ApplicationDbContext : DbContext {
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         modelBuilder.Entity<Item>().HasIndex(i => i.ItemCode).IsUnique();
         modelBuilder.Entity<Supplier>().HasIndex(s => s.SupplierCode).IsUnique();
+
+        modelBuilder.Entity<ItemPrice>()
+            .HasOne(ip => ip.Item)
+            .WithMany(i => i.ItemPrices)
+            .HasForeignKey(ip => ip.ItemId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ItemPrice>()
+            .HasOne(ip => ip.Supplier)
+            .WithMany(s => s.ItemPrices)
+            .HasForeignKey(ip => ip.SupplierId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
