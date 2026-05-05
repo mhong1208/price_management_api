@@ -9,6 +9,8 @@ public class PaginationRequestDto
     public string? SearchText { get; set; }
     public string? Category { get; set; }
     public ItemStatus? Status { get; set; }
+    public Guid? ItemId { get; set; }
+    public Guid? SupplierId { get; set; }
 }
 
 public class PagedResult<T>

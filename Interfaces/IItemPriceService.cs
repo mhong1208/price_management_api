@@ -10,5 +10,5 @@ public interface IItemPriceService
     Task<ItemPriceDto> UpdateItemPriceAsync(Guid id, CreateItemPriceDto dto);
     Task<ItemPriceDto> DeleteItemPriceAsync(Guid id);
     Task<PagedResult<ItemPriceDto>> GetItemPricesPaginatedAsync(PaginationRequestDto request);
-    Task<IEnumerable<ItemPriceHistoryDto>> GetPriceHistoryAsync(Guid? itemId, Guid? supplierId);
+    Task<PagedResult<ItemPriceHistoryDto>> GetPriceHistoryAsync(PaginationRequestDto request);
 }

@@ -60,9 +60,9 @@ public class ItemPricesController : ControllerBase
     }
 
     [HttpGet("history")]
-    public async Task<ActionResult<IEnumerable<ItemPriceHistoryDto>>> GetPriceHistory([FromQuery] Guid? itemId, [FromQuery] Guid? supplierId)
+    public async Task<ActionResult<PagedResult<ItemPriceHistoryDto>>> GetPriceHistory([FromQuery] PaginationRequestDto request)
     {
-        var history = await _itemPriceService.GetPriceHistoryAsync(itemId, supplierId);
-        return Ok(history);
+        var result = await _itemPriceService.GetPriceHistoryAsync(request);
+        return Ok(result);
     }
 }

@@ -153,6 +153,16 @@ public class ItemPriceService : IItemPriceService
                                       ip.Supplier.SupplierName.Contains(request.SearchText) ||
                                       ip.Supplier.SupplierCode.Contains(request.SearchText));
         }
+        
+        if (request.ItemId.HasValue)
+        {
+            query = query.Where(ip => ip.ItemId == request.ItemId.Value);
+        }
+
+        if (request.SupplierId.HasValue)
+        {
+            query = query.Where(ip => ip.SupplierId == request.SupplierId.Value);
+        }
 
         var totalCount = await query.CountAsync();
         var itemPrices = await query.Skip(request.Skip).Take(request.Take).ToListAsync();
@@ -229,28 +239,40 @@ public class ItemPriceService : IItemPriceService
         };
     }
 
-    public async Task<IEnumerable<ItemPriceHistoryDto>> GetPriceHistoryAsync(Guid? itemId, Guid? supplierId)
+    public async Task<PagedResult<ItemPriceHistoryDto>> GetPriceHistoryAsync(PaginationRequestDto request)
     {
         var query = _context.ItemPriceHistories
             .Include(iph => iph.Item)
             .Include(iph => iph.Supplier)
             .AsQueryable();
 
-        if (itemId.HasValue)
+        if (request.ItemId.HasValue)
         {
-            query = query.Where(iph => iph.ItemId == itemId.Value);
+            query = query.Where(iph => iph.ItemId == request.ItemId.Value);
         }
 
-        if (supplierId.HasValue)
+        if (request.SupplierId.HasValue)
         {
-            query = query.Where(iph => iph.SupplierId == supplierId.Value);
+            query = query.Where(iph => iph.SupplierId == request.SupplierId.Value);
         }
+
+        if (!string.IsNullOrEmpty(request.SearchText))
+        {
+            query = query.Where(iph => iph.Item.ItemName.Contains(request.SearchText) ||
+                                       iph.Item.ItemCode.Contains(request.SearchText) ||
+                                       iph.Supplier.SupplierName.Contains(request.SearchText) ||
+                                       iph.Supplier.SupplierCode.Contains(request.SearchText));
+        }
+
+        var totalCount = await query.CountAsync();
 
         var history = await query
             .OrderByDescending(iph => iph.CreatedAt)
+            .Skip(request.Skip)
+            .Take(request.Take)
             .ToListAsync();
 
-        return history.Select(h => new ItemPriceHistoryDto
+        var dtos = history.Select(h => new ItemPriceHistoryDto
         {
             Id = h.Id,
             ItemId = h.ItemId,
@@ -264,6 +286,12 @@ public class ItemPriceService : IItemPriceService
             Action = h.Action,
             Notes = h.Notes,
             CreatedAt = h.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")
-        });
+        }).ToList();
+
+        return new PagedResult<ItemPriceHistoryDto>
+        {
+            Items = dtos,
+            TotalCount = totalCount
+        };
     }
 }
