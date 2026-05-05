@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using price_management_api.Data;
 
@@ -11,9 +12,11 @@ using price_management_api.Data;
 namespace price_management_api.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260505123855_AddColItem")]
+    partial class AddColItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,9 +27,11 @@ namespace price_management_api.Data.Migrations
 
             modelBuilder.Entity("price_management_api.Entities.Item", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Category")
                         .HasColumnType("longtext");
@@ -70,9 +75,11 @@ namespace price_management_api.Data.Migrations
 
             modelBuilder.Entity("price_management_api.Entities.ItemPrice", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -90,17 +97,11 @@ namespace price_management_api.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ItemId1")
-                        .HasColumnType("char(36)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(65,30)");
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
-
-                    b.Property<Guid>("SupplierId1")
-                        .HasColumnType("char(36)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
@@ -110,18 +111,20 @@ namespace price_management_api.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId1");
+                    b.HasIndex("ItemId");
 
-                    b.HasIndex("SupplierId1");
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("ItemPrices");
                 });
 
             modelBuilder.Entity("price_management_api.Entities.Supplier", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -158,13 +161,13 @@ namespace price_management_api.Data.Migrations
                 {
                     b.HasOne("price_management_api.Entities.Item", "Item")
                         .WithMany("ItemPrices")
-                        .HasForeignKey("ItemId1")
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("price_management_api.Entities.Supplier", "Supplier")
                         .WithMany("ItemPrices")
-                        .HasForeignKey("SupplierId1")
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

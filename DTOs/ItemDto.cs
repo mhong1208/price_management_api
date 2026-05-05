@@ -1,13 +1,16 @@
+using price_management_api.Enums;
+
 namespace price_management_api.DTOs;
 
 public class ItemDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string ItemCode { get; set; } = string.Empty;
     public string ItemName { get; set; } = string.Empty;
     public string? Description { get; set; }
     public string? Unit { get; set; }
-    public string Status { get; set; } = string.Empty;
+    public string? Category { get; set; }
+    public ItemStatus Status { get; set; } = ItemStatus.ACTIVE;
 }
 
 public class CreateItemDto
@@ -16,4 +19,6 @@ public class CreateItemDto
     public string ItemName { get; set; } = string.Empty;
     public string? Description { get; set; }
     public string? Unit { get; set; }
+    public string? Category { get; set; }
+    public ItemStatus Status { get; set; } = ItemStatus.ACTIVE;
 }
