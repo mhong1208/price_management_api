@@ -24,7 +24,7 @@ public class ItemsController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ItemDto>> GetItem(Guid id)
+    public async Task<ActionResult<ItemDetailDto>> GetItem(Guid id)
     {
         var item = await _itemService.GetItemByIdAsync(id);
         if (item == null) return NotFound(new { message = "Không tìm thấy mặt hàng này" });

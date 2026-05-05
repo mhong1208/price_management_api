@@ -31,12 +31,16 @@ public class ItemService : IItemService
         });
     }
 
-    public async Task<ItemDto?> GetItemByIdAsync(Guid id)
+    public async Task<ItemDetailDto?> GetItemByIdAsync(Guid id)
     {
-        var item = await _context.Items.FindAsync(id);
+        var item = await _context.Items
+            .Include(i => i.ItemPrices)
+                .ThenInclude(ip => ip.Supplier)
+            .FirstOrDefaultAsync(i => i.Id == id);
+
         if (item == null) return null;
         
-        return new ItemDto
+        return new ItemDetailDto
         {
             Id = item.Id,
             ItemCode = item.ItemCode,
@@ -44,7 +48,29 @@ public class ItemService : IItemService
             Description = item.Description,
             Unit = item.Unit,
             Category = item.Category,
-            Status = item.Status
+            Status = item.Status,
+            SupplierPrices = item.ItemPrices.Select(ip => new ItemPriceDetailDto
+            {
+                Id = ip.Id.ToString(),
+                Supplier = new SupplierDto
+                {
+                    Id = ip.Supplier.Id,
+                    SupplierCode = ip.Supplier.SupplierCode,
+                    SupplierName = ip.Supplier.SupplierName,
+                    ContactPerson = ip.Supplier.ContactPerson,
+                    Email = ip.Supplier.Email,
+                    Phone = ip.Supplier.Phone,
+                    Address = ip.Supplier.Address,
+                    TaxCode = ip.Supplier.TaxCode,
+                    Status = ip.Supplier.Status
+                },
+                Price = ip.Price,
+                Currency = ip.Currency,
+                EffectiveDate = ip.EffectiveDate.ToString("yyyy-MM-dd"),
+                Notes = ip.Notes,
+                CreatedAt = ip.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                UpdatedAt = ip.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss")
+            }).ToList()
         };
     }
 
