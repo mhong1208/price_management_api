@@ -1,10 +1,15 @@
+using price_management_api.Enums;
+
 namespace price_management_api.Entities;
 
 public class Supplier : BaseEntity {
     public required string SupplierCode { get; set; }
     public required string SupplierName { get; set; }
+    public string? ContactPerson { get; set; }
     public string? Email { get; set; }
-    // ... các trường khác theo đề bài
+    public string? Phone { get; set; }
+    public string? Address { get; set; }
+    public ItemStatus Status { get; set; } = ItemStatus.ACTIVE;
 
     public ICollection<ItemPrice> ItemPrices { get; set; } = [];
 }
