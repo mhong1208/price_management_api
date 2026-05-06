@@ -35,6 +35,16 @@ Update the connection string in `appsettings.json`:
 }
 ```
 
+### Restore Dependencies
+
+After cloning the repository, the `bin/` and `obj/` folders are not included (they are git-ignored). Run the following command to restore NuGet packages and generate them:
+
+```bash
+dotnet restore
+```
+
+> This step is required before running migrations or starting the application.
+
 ### Database Setup
 
 1. **Install EF Core Tools** (if not already installed):
