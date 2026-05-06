@@ -62,6 +62,7 @@ public class ItemService : IItemService
                     Phone = ip.Supplier.Phone,
                     Address = ip.Supplier.Address,
                     TaxCode = ip.Supplier.TaxCode,
+                    Description = ip.Supplier.Description,
                     Status = ip.Supplier.Status
                 },
                 Price = ip.Price,

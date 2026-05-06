@@ -47,6 +47,7 @@ public class SupplierService : ISupplierService
             Phone = dto.Phone,
             Address = dto.Address,
             TaxCode = dto.TaxCode,
+            Description = dto.Description,
             Status = dto.Status,
             CreatedAt = DateTime.UtcNow
         };
@@ -61,16 +62,23 @@ public class SupplierService : ISupplierService
     {
         var supplier = await _context.Suppliers.FindAsync(id);
         if (supplier == null) throw new Exception("Supplier not found");
+        
         if (string.IsNullOrWhiteSpace(dto.SupplierName))
             throw new Exception("Supplier name is required");
 
         supplier.SupplierName = dto.SupplierName;
+        if (!string.IsNullOrWhiteSpace(dto.SupplierCode))
+        {
+            supplier.SupplierCode = dto.SupplierCode;
+        }
         supplier.ContactPerson = dto.ContactPerson;
         supplier.Email = dto.Email;
         supplier.Phone = dto.Phone;
         supplier.Address = dto.Address;
         supplier.TaxCode = dto.TaxCode;
+        supplier.Description = dto.Description;
         supplier.Status = dto.Status;
+        supplier.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 
@@ -137,6 +145,7 @@ public class SupplierService : ISupplierService
             Phone = supplier.Phone,
             Address = supplier.Address,
             TaxCode = supplier.TaxCode,
+            Description = supplier.Description,
             Status = supplier.Status
         };
     }
